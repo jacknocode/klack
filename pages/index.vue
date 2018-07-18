@@ -1,64 +1,43 @@
 <template>
-  <section class="container">
-    <div>
-      <app-logo/>
-      <h1 class="title">
-        klack
-      </h1>
-      <h2 class="subtitle">
-        Nuxt.js project
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green">Documentation</a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey">GitHub</a>
-      </div>
-    </div>
+  <section>
+     <div class="title">{{ name }}</div>
+
+      <ul>
+        <li v-for="Message in Messages" :key="Message.id">{{ Message }}</li>
+      </ul>
+
+
+
+      <form @submit.prevent="addMessage">
+       <input type="text" v-model="newMessage">
+       <input type="submit" value="送る">
+     </form>
   </section>
 </template>
 
 <script>
-import AppLogo from '~/components/AppLogo.vue'
-
 export default {
-  components: {
-    AppLogo
+  data () {
+    return {
+      newMessage: '',
+      name: 'Wellcome klack!!',
+      Messages: []
+    }
+  },
+  methods:{
+    addMessage: function(){
+      this.Messages.push(this.newMessage);
+      this.newMessage ="";
+    }
   }
 }
 </script>
 
 <style>
-.container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
 .title {
-  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 1 */
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
+  color: red;
 }
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
+li {
+  list-style-type: none;
+  }
 </style>

@@ -2,7 +2,8 @@
   <section>
      <div class="title">{{ name }}</div>
       <div class="message__body">
-        <p v-for="Message in Messages" :key="Message.id">{{ Message }}</p>
+        <p v-for="Message in Messages" :key="Message.id">{{ Message }}
+        </p>
       </div>
       <form @submit.prevent="addMessage">
        <input type="text" v-model="newMessage">
@@ -20,10 +21,19 @@ export default {
       Messages: []
     }
   },
+  watch: {
+    Messages: function(){
+      localStorage.setItem('Messages', JSON.stringify(this.Messages));
+      //   handler: function(){
+      //   localStorage.setItem('Messages', JSON.stringify(this.Messages));
+      // },
+      // deep: ture
+    }
+  },
   methods:{
     addMessage: function(){
       this.Messages.push(this.newMessage);
-      this.newMessage ="";
+      this.newMessage ='';
     },
     // sendMessage() {
     //   let now = new Date()  // 現在時刻（世界標準時）を取得

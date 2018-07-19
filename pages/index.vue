@@ -2,11 +2,14 @@
   <section>
      <div class="title">{{ name }}</div>
       <div class="message__body">
-        <p v-for="Message in Messages" :key="Message.id">{{ Message }}</p>
+        <p v-for="(m, index) in messageData" :key="m">{{ m }}
+          <span v-on:click="edit__click(index)">📝</span>
+          <span v-on:click="delete__click(index)">❌</span>
+        </p>
       </div>
       <form @submit.prevent="addMessage">
-       <input type="text" v-model="newMessage">
-       <input type="submit" value="送信">
+       <textarea type="text" v-model="newMessage" class="Message__text"></textarea>
+       <input type="submit" value="送信" class="Message__btn">
       </form>
   </section>
 </template>
@@ -16,7 +19,14 @@ export default {
     return {
       newMessage: '',
       name: 'Wellcome klack!!',
-      Messages: []
+      Messages: [
+
+      ]
+    }
+  },
+  computed: {
+    messageData() {
+      return this.Messages;
     }
   },
   watch: {
@@ -29,10 +39,24 @@ export default {
     }
   },
   methods:{
-    addMessage: function(){
+    addMessage(){
       this.Messages.push(this.newMessage);
       this.newMessage ='';
     },
+    edit__click(index) {
+      var newMessagesArray = this.Messages;
+      this.Messages = [];
+      var newMessages = window.prompt('Message edit' , newMessagesArray[index]);
+      if (typeof newMessages === 'string') {
+        newMessagesArray[index] = newMessages;
+      }
+      this.Messages = newMessagesArray;
+    },
+    delete__click(index){
+      if(confirm('消しちゃうよ?')){
+        this.Messages.splice(index, 1);
+      }
+    }
     // sendMessage() {
     //   let now = new Date()  // 現在時刻（世界標準時）を取得
     //   now.setTime(now.getTime() + 1000 * 60 * 60 * 9) // 日本時間に変換
@@ -60,13 +84,31 @@ section{
 }
 .message__body > p {
   margin: 10px;
+  display: grid;
+  grid-template-columns: 240px 20px 20px;
+  border-bottom: solid 0.2px #ccc;
+  padding-bottom: 6px;
+}
+p > span {
+  font-size: 14px;
 }
 form {
   grid-row: 3;
   grid-column: 2;
-  margin: auto;
+  display: flex;
 }
-form > input {
-  border-color: #eeaa2c;
+.Message__text {
+  height: 60px;
+  width: 230px;
+}
+.Message__btn {
+  height: 60px;
+  width: 70px;
+  background-color: #3170e6;
+  color: #fff;
+}
+.Message__btn:hover{
+  background-color: #38a5ff;
+  transition: 0.2s;
 }
 </style>

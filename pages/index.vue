@@ -2,8 +2,7 @@
   <section>
      <div class="title">{{ name }}</div>
       <div class="message__body">
-        <p v-for="Message in Messages" :key="Message.id">{{ Message }}
-        </p>
+        <p v-for="Message in Messages" :key="Message.id">{{ Message }}</p>
       </div>
       <form @submit.prevent="addMessage">
        <input type="text" v-model="newMessage">
@@ -11,7 +10,6 @@
       </form>
   </section>
 </template>
-
 <script>
 export default {
   data () {
@@ -43,7 +41,6 @@ export default {
   },
 }
 </script>
-
 <style>
 section{
   display: grid;
@@ -56,7 +53,6 @@ section{
   color: red;
   border: solid 2px;
 }
-
 .message__body {
   grid-row: 2;
   grid-column: 2;
@@ -73,5 +69,4 @@ form {
 form > input {
   border-color: #eeaa2c;
 }
-
 </style>

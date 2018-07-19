@@ -52,6 +52,9 @@ section{
   grid-column: 2;
   background-color: #d8d8d8;
 }
+.message__body > p {
+  margin: 10px;
+}
 form {
   grid-row: 3;
   grid-column: 2;

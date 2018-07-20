@@ -74,7 +74,7 @@ section{
 .title {
   height: 80px;
   width: 100px;
-  color: red;
+  color: #3ca89f;
   border: solid 2px;
 }
 .message__body {

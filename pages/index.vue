@@ -7,6 +7,14 @@
           <span v-on:click="delete__click(index)">❌</span>
         </p>
       </div>
+      <div class="message__sidebar">
+        <div class="message__sidebar__title">{{ tabBody }}</div>
+        <ul>
+          <li v-for="(tab, index) in tabNav" @click="change__tab(index)" :key="tab">
+            {{ tab }}
+          </li>
+        </ul>
+      </div>
       <form @submit.prevent="addMessage">
        <textarea type="text" v-model="newMessage" class="Message__text"></textarea>
        <input type="submit" value="送信" class="Message__btn">
@@ -19,9 +27,18 @@ export default {
     return {
       newMessage: '',
       name: 'Wellcome klack!!',
-      Messages: [
-
-      ]
+      Messages: [],
+      tabNav: [
+            'general',
+            'dev',
+            'asobiba'
+        ],
+      contents: [
+        '📝',
+        '💻',
+        '🏀'
+      ],
+      tabBody:'🏠',
     }
   },
   computed: {
@@ -30,16 +47,16 @@ export default {
     }
   },
   watch: {
-    Messages: function(){
+    Messages: function() {
       localStorage.setItem('Messages', JSON.stringify(this.Messages));
-      //   handler: function(){
+      //   handler: function() {
       //   localStorage.setItem('Messages', JSON.stringify(this.Messages));
       // },
       // deep: ture
     }
   },
-  methods:{
-    addMessage(){
+  methods: {
+    addMessage() {
       this.Messages.push(this.newMessage);
       this.newMessage ='';
     },
@@ -52,10 +69,13 @@ export default {
       }
       this.Messages = newMessagesArray;
     },
-    delete__click(index){
-      if(confirm('消しちゃうよ?')){
+    delete__click(index) {
+      if(confirm('消しちゃうよ?')) {
         this.Messages.splice(index, 1);
       }
+    },
+    change__tab: function (index) {
+            this.tabBody = this.contents[index];
     }
     // sendMessage() {
     //   let now = new Date()  // 現在時刻（世界標準時）を取得
@@ -66,7 +86,7 @@ export default {
 }
 </script>
 <style>
-section{
+section {
   display: grid;
   grid-template-rows: 80px 500px 60px 1fr;
   grid-template-columns: 100px 300px;
@@ -92,6 +112,24 @@ section{
 p > span {
   font-size: 14px;
 }
+.message__sidebar {
+  grid-column: 1;
+  background-color: #3ca89f;
+}
+.message__sidebar > ul {
+  list-style-type:none;
+  padding: 0;
+  text-align: center;
+
+}
+.message__sidebar > ul > li {
+  margin: 10px;
+}
+.message__sidebar__title {
+  text-align: center;
+  margin: 20px;
+  font-size: 20px;
+}
 form {
   grid-row: 3;
   grid-column: 2;
@@ -107,7 +145,7 @@ form {
   background-color: #3170e6;
   color: #fff;
 }
-.Message__btn:hover{
+.Message__btn:hover {
   background-color: #38a5ff;
   transition: 0.2s;
 }

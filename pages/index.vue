@@ -1,7 +1,19 @@
 <template>
   <section>
      <div class="title">{{ name }}</div>
-      <div class="message__body">
+      <div v-if="tabData === 'general'" class="message__body">
+        <p v-for="(m, index) in messageData" :key="m">{{ m }}
+          <span v-on:click="edit__click(index)">📝</span>
+          <span v-on:click="delete__click(index)">❌</span>
+        </p>
+      </div>
+      <div v-else-if="tabData === 'dev'" class="message__body message__body_litegray">
+        <p v-for="(m, index) in messageData" :key="m">{{ m }}
+          <span v-on:click="edit__click(index)">📝</span>
+          <span v-on:click="delete__click(index)">❌</span>
+        </p>
+      </div>
+      <div v-else-if="tabData === 'asobiba'" class="message__body message__body_gray">
         <p v-for="(m, index) in messageData" :key="m">{{ m }}
           <span v-on:click="edit__click(index)">📝</span>
           <span v-on:click="delete__click(index)">❌</span>
@@ -39,12 +51,16 @@ export default {
         '🏀'
       ],
       tabBody:'🏠',
+      tabData: '',
     }
   },
   computed: {
     messageData() {
       return this.Messages;
-    }
+    },
+    // tabData() {
+    //   return this.tabNav;
+    // }
   },
   watch: {
     Messages: function() {
@@ -75,8 +91,9 @@ export default {
       }
     },
     change__tab: function (index) {
-            this.tabBody = this.contents[index];
-    }
+      this.tabBody = this.contents[index];
+      this.tabData = this.tabNav[index];
+    },
     // sendMessage() {
     //   let now = new Date()  // 現在時刻（世界標準時）を取得
     //   now.setTime(now.getTime() + 1000 * 60 * 60 * 9) // 日本時間に変換
@@ -100,7 +117,13 @@ section {
 .message__body {
   grid-row: 2;
   grid-column: 2;
-  background-color: #d8d8d8;
+  background-color: #ffffff;
+}
+.message__body_litegray {
+  background-color: #d3d3d3;
+}
+.message__body_gray {
+  background-color: #9e9e9e;
 }
 .message__body > p {
   margin: 10px;

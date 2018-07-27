@@ -1,29 +1,17 @@
 <template>
   <section>
      <div class="title">{{ name }}</div>
-      <div v-if="tabData === 'general'" class="message__body">
-        <p v-for="(m, index) in messageData" :key="m">{{ m }}
-          <span v-on:click="edit__click(index)">📝</span>
-          <span v-on:click="delete__click(index)">❌</span>
-        </p>
-      </div>
-      <div v-else-if="tabData === 'dev'" class="message__body message__body_litegray">
-        <p v-for="(m, index) in messageData" :key="m">{{ m }}
-          <span v-on:click="edit__click(index)">📝</span>
-          <span v-on:click="delete__click(index)">❌</span>
-        </p>
-      </div>
-      <div v-else-if="tabData === 'asobiba'" class="message__body message__body_gray">
-        <p v-for="(m, index) in messageData" :key="m">{{ m }}
+      <div class="message__body" :class="currentTabClassname">
+        <p v-for="(m, index) in currentMessages" :key="m">{{ m }}
           <span v-on:click="edit__click(index)">📝</span>
           <span v-on:click="delete__click(index)">❌</span>
         </p>
       </div>
       <div class="message__sidebar">
-        <div class="message__sidebar__title">{{ tabBody }}</div>
+        <div class="message__sidebar__title">{{ channelIcon }}</div>
         <ul>
-          <li v-for="(tab, index) in tabNav" @click="change__tab(index)" :key="tab">
-            {{ tab }}
+          <li v-for="(t, index) in channelNav" @click="change__channel(index)" :key="t">
+            {{ t }}
           </li>
         </ul>
       </div>
@@ -34,71 +22,83 @@
   </section>
 </template>
 <script>
+
+const channels = ['general', 'dev', 'asobiba'];
+
+const allMessages = {};
+channels.forEach((c) => {
+  allMessages[c] = [];
+});
+
 export default {
   data () {
     return {
       newMessage: '',
       name: 'Wellcome klack!!',
-      Messages: [],
-      tabNav: [
-            'general',
-            'dev',
-            'asobiba'
-        ],
+      channelNav: channels,
       contents: [
         '📝',
         '💻',
         '🏀'
       ],
-      tabBody:'🏠',
-      tabData: '',
+      channelIcon:'🏠',
+       channelData: '',
+
+      allMessages
     }
   },
   computed: {
-    messageData() {
-      return this.Messages;
+    currentTabClassname() {
+      return `message__body_${this. channelData}`;
     },
-    // tabData() {
-    //   return this.tabNav;
-    // }
-  },
-  watch: {
-    Messages: function() {
-      localStorage.setItem('Messages', JSON.stringify(this.Messages));
-      //   handler: function() {
-      //   localStorage.setItem('Messages', JSON.stringify(this.Messages));
-      // },
-      // deep: ture
+
+    currentMessages() {
+      return this.allMessages[this. channelData] || [];
     }
   },
+  // mounted() {
+  //   window.setInterval(() => {
+  //     this.releasedAtFromNow = this.getReleasedAtFromNow()
+  //     }, 1000 * 60)
+  // },
+  // watch: {
+  //   Messages: function() {
+  //     localStorage.setItem('Messages', JSON.stringify(this.Messages));
+  //     //   handler: function() {
+  //     //   localStorage.setItem('Messages', JSON.stringify(this.Messages));
+  //     // },
+  //     // deep: ture
+  //   }
+  // },
   methods: {
+
     addMessage() {
-      this.Messages.push(this.newMessage);
+      this.currentMessages.push(this.newMessage);
       this.newMessage ='';
     },
     edit__click(index) {
-      var newMessagesArray = this.Messages;
-      this.Messages = [];
-      var newMessages = window.prompt('Message edit' , newMessagesArray[index]);
+      const newMessagesArray = this.currentMessages;
+      this.currentMessages = [];
+      const newMessages = window.prompt('Message edit' , newMessagesArray[index]);
       if (typeof newMessages === 'string') {
         newMessagesArray[index] = newMessages;
       }
-      this.Messages = newMessagesArray;
+      this.currentMessages = newMessagesArray;
     },
     delete__click(index) {
       if(confirm('消しちゃうよ?')) {
-        this.Messages.splice(index, 1);
+        this.currentMessages.splice(index, 1);
       }
     },
-    change__tab: function (index) {
-      this.tabBody = this.contents[index];
-      this.tabData = this.tabNav[index];
+    change__channel: function (index) {
+      this.channelIcon = this.contents[index];
+      this. channelData = this.channelNav[index];
     },
-    // sendMessage() {
-    //   let now = new Date()  // 現在時刻（世界標準時）を取得
-    //   now.setTime(now.getTime() + 1000 * 60 * 60 * 9) // 日本時間に変換
-    //   now = now.toJSON().split('T')[1].slice(0, 5)  // 時刻のみを取得
-    // }
+    // async changeCL() {
+    //    this.$store.dispatch("addMessage",{
+    //       Messages: this.Messages
+    //       })
+    //   }
   },
 }
 </script>
@@ -119,11 +119,11 @@ section {
   grid-column: 2;
   background-color: #ffffff;
 }
-.message__body_litegray {
+.message__body_dev {
   background-color: #d3d3d3;
 }
-.message__body_gray {
-  background-color: #9e9e9e;
+.message__body_asobiba {
+  background-color: #bdd3dd;
 }
 .message__body > p {
   margin: 10px;
@@ -133,7 +133,7 @@ section {
   padding-bottom: 6px;
 }
 p > span {
-  font-size: 14px;
+  font-size: 13px;
 }
 .message__sidebar {
   grid-column: 1;
@@ -146,7 +146,8 @@ p > span {
 
 }
 .message__sidebar > ul > li {
-  margin: 10px;
+  padding: 10px;
+  border-bottom: solid 0.2px #badbeb;
 }
 .message__sidebar__title {
   text-align: center;

@@ -39,6 +39,7 @@ export default {
       ],
       channelIcon:'🏠',
       channelData: '',
+      allMessages
     }
   },
   computed: {
@@ -49,7 +50,7 @@ export default {
       return this.channels
     },
     currentMessages() {
-      return allMessages[this.channelData] || [];
+      return allMessages[this.channelData];
     },
   },
   methods: {
@@ -58,18 +59,20 @@ export default {
       this. channelData = this.channels[index].name;
     },
     addMessage() {
+      // console.log(this.channels);
       this.currentMessages.push(this.newMessage);
       this.newMessage ='';
     },
     // edit が壊れてます。7/30
     edit__click(index) {
       const newMessagesArray = this.currentMessages;
-      this.currentMessages = [];
+      // this.currentMessages = [];
       const newMessages = window.prompt('Message edit' , newMessagesArray[index]);
       if (typeof newMessages === 'string') {
-        newMessagesArray[index] = newMessages;
+        // allMessages[this.channelData][index] = newMessages;
+        this.$set(this.currentMessages, index, newMessages)
       }
-      this.currentMessages = newMessagesArray;
+      // this.currentMessages = newMessagesArray;
     },
     delete__click(index) {
       if(confirm('消しちゃうよ?')) {

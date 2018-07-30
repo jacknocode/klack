@@ -10,8 +10,8 @@
       <div class="message__sidebar">
         <div class="message__sidebar__title">{{ channelIcon }}</div>
         <ul>
-          <li v-for="(t, index) in channelNav" @click="change__channel(index)" :key="t">
-            {{ t }}
+          <li v-for="(t, index) in channelNav" @click="change__channel(index)" :key="t.name">
+            {{ t.name }}
           </li>
         </ul>
       </div>
@@ -22,60 +22,46 @@
   </section>
 </template>
 <script>
-
-const channels = ['general', 'dev', 'asobiba'];
-
-const allMessages = {};
-channels.forEach((c) => {
-  allMessages[c] = [];
-});
-
+const allMessages = {
+   'general': [],
+   'dev': [],
+   'asobiba': []
+};
 export default {
   data () {
     return {
       newMessage: '',
       name: 'Wellcome klack!!',
-      channelNav: channels,
-      contents: [
-        '📝',
-        '💻',
-        '🏀'
+      channels: [
+        { name: 'general', icon: '📝' },
+        { name: 'dev', icon: '💻' },
+        { name: 'asobiba', icon: '🏀' }
       ],
       channelIcon:'🏠',
-       channelData: '',
-
-      allMessages
+      channelData: '',
     }
   },
   computed: {
     currentTabClassname() {
-      return `message__body_${this. channelData}`;
+      return `message__body_${this.channelData}`;
     },
-
+    channelNav() {
+      return this.channels
+    },
     currentMessages() {
-      return this.allMessages[this. channelData] || [];
-    }
+      return allMessages[this.channelData] || [];
+    },
   },
-  // mounted() {
-  //   window.setInterval(() => {
-  //     this.releasedAtFromNow = this.getReleasedAtFromNow()
-  //     }, 1000 * 60)
-  // },
-  // watch: {
-  //   Messages: function() {
-  //     localStorage.setItem('Messages', JSON.stringify(this.Messages));
-  //     //   handler: function() {
-  //     //   localStorage.setItem('Messages', JSON.stringify(this.Messages));
-  //     // },
-  //     // deep: ture
-  //   }
-  // },
   methods: {
-
+     change__channel: function (index) {
+      this.channelIcon = this.channels[index].icon;
+      this. channelData = this.channels[index].name;
+    },
     addMessage() {
       this.currentMessages.push(this.newMessage);
       this.newMessage ='';
     },
+    // edit が壊れてます。7/30
     edit__click(index) {
       const newMessagesArray = this.currentMessages;
       this.currentMessages = [];
@@ -90,15 +76,6 @@ export default {
         this.currentMessages.splice(index, 1);
       }
     },
-    change__channel: function (index) {
-      this.channelIcon = this.contents[index];
-      this. channelData = this.channelNav[index];
-    },
-    // async changeCL() {
-    //    this.$store.dispatch("addMessage",{
-    //       Messages: this.Messages
-    //       })
-    //   }
   },
 }
 </script>

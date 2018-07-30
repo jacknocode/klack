@@ -2,7 +2,7 @@
 
 🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶
 
-Creating with nuxt.js is a project for my assignment.✌️
+ My assignment practical project with nuxt.js.✌️
 
 🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶
 ## Build Setup

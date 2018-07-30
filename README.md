@@ -1,9 +1,9 @@
 # klack
 
 🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶
-
- My assignment practical project with nuxt.js.✌️
-
+<br>
+         My assignment practical project with nuxt.js.✌️
+<br>
 🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶🐶
 ## Build Setup
 

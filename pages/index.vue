@@ -19,7 +19,7 @@
        <textarea type="text" v-model="newMessage" class="Message__text"></textarea>
        <input type="submit" value="送信" class="Message__btn">
       </form>
-      <form v-if="this.editNumber > 0"  @submit.prevent="setMessage" class="form2">
+      <form v-if="this.editNumber !== ''"  @submit.prevent="setMessage" class="form2">
        <textarea type="text" v-model="newMessage" class="Message__text"></textarea>
        <input type="submit" value="確定" class="Message__btn">
       </form>
@@ -73,13 +73,12 @@ export default {
     changeEditMode(index) {
       this.editNumber = index;
       const eMA = this.currentMessages;
-      this.newMessage = eMA[index];     // class付与　editMode
+      this.newMessage = eMA[index];
     },
     setMessage() {
-
       this.$set(this.currentMessages, this.editNumber , this.newMessage);
       this.newMessage ='';
-      // this.editNumber ='';
+      this.editNumber ='';
     },
     deleteMessage(index) {
       if(confirm('消しちゃうよ?')) {

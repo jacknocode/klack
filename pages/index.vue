@@ -3,14 +3,14 @@
      <div class="title">{{ name }}</div>
       <div class="message__body" :class="currentTabClassname">
         <p v-for="(m, index) in currentMessages" :key="m">{{ m }}
-          <span v-on:click="edit__click(index)">📝</span>
-          <span v-on:click="delete__click(index)">❌</span>
+          <span v-on:click="changeEditMode(index)">📝</span>
+          <span v-on:click="deleteMessage(index)">❌</span>
         </p>
       </div>
       <div class="message__sidebar">
         <div class="message__sidebar__title">{{ channelIcon }}</div>
         <ul>
-          <li v-for="(t, index) in channelNav" @click="change__channel(index)" :key="t.name">
+          <li v-for="(t, index) in channelNav" @click="changeChannel(index)" :key="t.name">
             {{ t.name }}
           </li>
         </ul>
@@ -18,6 +18,10 @@
       <form @submit.prevent="addMessage">
        <textarea type="text" v-model="newMessage" class="Message__text"></textarea>
        <input type="submit" value="送信" class="Message__btn">
+      </form>
+      <form v-if="this.editNumber !== ''"  @submit.prevent="setMessage" class="form2">
+       <textarea type="text" v-model="newMessage" class="Message__text"></textarea>
+       <input type="submit" value="確定" class="Message__btn">
       </form>
   </section>
 </template>
@@ -39,6 +43,7 @@ export default {
       ],
       channelIcon:'🏠',
       channelData: '',
+      editNumber: '',
       allMessages
     }
   },
@@ -52,29 +57,30 @@ export default {
     currentMessages() {
       return allMessages[this.channelData];
     },
+    // editModeClassname() {
+    //   return  `form__body_editMode`;
+    // }
   },
   methods: {
-     change__channel: function (index) {
+     changeChannel: function (index) {
       this.channelIcon = this.channels[index].icon;
-      this. channelData = this.channels[index].name;
+      this.channelData = this.channels[index].name;
     },
     addMessage() {
-      // console.log(this.channels);
       this.currentMessages.push(this.newMessage);
       this.newMessage ='';
     },
-    // edit が壊れてます。7/30
-    edit__click(index) {
-      const newMessagesArray = this.currentMessages;
-      // this.currentMessages = [];
-      const newMessages = window.prompt('Message edit' , newMessagesArray[index]);
-      if (typeof newMessages === 'string') {
-        // allMessages[this.channelData][index] = newMessages;
-        this.$set(this.currentMessages, index, newMessages)
-      }
-      // this.currentMessages = newMessagesArray;
+    changeEditMode(index) {
+      this.editNumber = index;
+      const eMA = this.currentMessages;
+      this.newMessage = eMA[index];
     },
-    delete__click(index) {
+    setMessage() {
+      this.$set(this.currentMessages, this.editNumber , this.newMessage);
+      this.newMessage ='';
+      this.editNumber ='';
+    },
+    deleteMessage(index) {
       if(confirm('消しちゃうよ?')) {
         this.currentMessages.splice(index, 1);
       }
@@ -138,6 +144,9 @@ form {
   grid-row: 3;
   grid-column: 2;
   display: flex;
+}
+.form2 > textarea {
+  background-color: #e6f0af;
 }
 .Message__text {
   height: 60px;

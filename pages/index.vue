@@ -19,7 +19,7 @@
        <textarea type="text" v-model="newMessage" class="Message__text"></textarea>
        <input type="submit" value="送信" class="Message__btn">
       </form>
-      <form @submit.prevent="setMessage" class="form2">
+      <form v-if="this.editNumber > 0"  @submit.prevent="setMessage" class="form2">
        <textarea type="text" v-model="newMessage" class="Message__text"></textarea>
        <input type="submit" value="確定" class="Message__btn">
       </form>
@@ -79,6 +79,7 @@ export default {
 
       this.$set(this.currentMessages, this.editNumber , this.newMessage);
       this.newMessage ='';
+      // this.editNumber ='';
     },
     deleteMessage(index) {
       if(confirm('消しちゃうよ?')) {
@@ -144,10 +145,6 @@ form {
   grid-row: 3;
   grid-column: 2;
   display: flex;
-}
-.form2 {
-  grid-row: 3;
-  grid-column: 3;
 }
 .form2 > textarea {
   background-color: #e6f0af;

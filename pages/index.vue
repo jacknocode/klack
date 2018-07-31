@@ -1,6 +1,6 @@
 <template>
   <section>
-     <div class="title">{{ name }}</div>
+      <img :src="klackIcon" class="title__icon">
       <div class="message__body" :class="currentTabClassname">
         <p v-for="(m, index) in currentMessages" :key="m">{{ m }}
           <span v-on:click="changeEditMode(index)">📝</span>
@@ -34,8 +34,8 @@ const allMessages = {
 export default {
   data () {
     return {
+      klackIcon: require("../assets/klack-logo.png"),
       newMessage: '',
-      name: 'Wellcome klack!!',
       channels: [
         { name: 'general', icon: '📝' },
         { name: 'dev', icon: '💻' },
@@ -57,9 +57,6 @@ export default {
     currentMessages() {
       return allMessages[this.channelData];
     },
-    // editModeClassname() {
-    //   return  `form__body_editMode`;
-    // }
   },
   methods: {
      changeChannel: function (index) {
@@ -72,8 +69,8 @@ export default {
     },
     changeEditMode(index) {
       this.editNumber = index;
-      const eMA = this.currentMessages;
-      this.newMessage = eMA[index];
+      const editMessageArray = this.currentMessages;
+      this.newMessage = editMessageArray[index];
     },
     setMessage() {
       this.$set(this.currentMessages, this.editNumber , this.newMessage);
@@ -94,11 +91,11 @@ section {
   grid-template-rows: 80px 500px 60px 1fr;
   grid-template-columns: 100px 300px;
 }
-.title {
-  height: 80px;
-  width: 100px;
-  color: #3ca89f;
-  border: solid 2px;
+.title__icon {
+  width: 100%;
+  margin: auto;
+  grid-column: 1/2;
+  grid-row: 1/2;
 }
 .message__body {
   grid-row: 2;
@@ -123,7 +120,9 @@ p > span {
 }
 .message__sidebar {
   grid-column: 1;
+  grid-row: 2/4;
   background-color: #3ca89f;
+  color: #fff;
 }
 .message__sidebar > ul {
   list-style-type:none;

@@ -1,0 +1,31 @@
+.message{
+  &__body {
+    background-color: #ffffff;
+    &_general {
+      background-color: #efece2;
+    }
+    &_dev {
+      background-color: #d3d3d3;
+    }
+    &_asobiba {
+      background-color: #bdd3dd;
+    }
+  }
+  &__sidebar {
+    background-color: #3ca89f;
+    color: #fff;
+  }
+  &__btn {
+    background-color: #3170e6;
+    color: #fff;
+    &:hover {
+      background-color: #38a5ff;
+      transition: 0.2s;
+    }
+  }
+}
+.form2 {
+  textarea {
+    background-color: #e6f0af;
+  }
+}

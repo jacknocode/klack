@@ -20,6 +20,9 @@ module.exports = {
   /*
   ** Build configuration
   */
+  css: [
+    '@assets/css/app.css'
+  ],
   build: {
     /*
     ** Run ESLint on save
@@ -32,6 +35,9 @@ module.exports = {
           loader: 'eslint-loader',
           exclude: /(node_modules)/
         })
+        const cssLoader = config.module.rules.find((loader) => loader.test.toString() === '/\\.css$/')
+        cssLoader.use.push('postcss-loader')
+        //postcss-loaderの設定
       }
     }
   }

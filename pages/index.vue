@@ -2,7 +2,7 @@
   <section>
       <img :src="klackIcon" class="title__icon">
       <div class="message__body" :class="currentTabClassname">
-        <p v-for="(m, index) in currentMessages" :key="m">{{ m }}
+        <p v-for="(m, index) in channelMsg" :key="m">{{ m }}
           <span v-on:click="changeEditMode(index)">📝</span>
           <span v-on:click="deleteMessage(index)">❌</span>
         </p>
@@ -26,25 +26,21 @@
   </section>
 </template>
 <script>
-const allMessages = {
-   'general': [],
-   'dev': [],
-   'asobiba': []
-};
+import lodash from'lodash'
+
 export default {
   data () {
     return {
       klackIcon: require("../assets/klack-logo.png"),
       newMessage: '',
       channels: [
-        { name: 'general', icon: '📝' },
-        { name: 'dev', icon: '💻' },
-        { name: 'asobiba', icon: '🏀' }
+        { name: 'general', icon: '📝',Msg: []},//channnels.Msg[index] = allMessages.channnelData[index] やりたい→Msg: { number: n ,body:"" }
+        { name: 'dev', icon: '💻',Msg: []},
+        { name: 'asobiba', icon: '🏀',Msg: []}
       ],
       channelIcon:'⤵️',
       channelData: '',
       editNumber: '',
-      allMessages
     }
   },
   computed: {
@@ -55,21 +51,22 @@ export default {
       return this.channels
     },
     currentMessages() {
-      return allMessages[this.channelData];
+      return this.channelMsg;
     },
   },
   methods: {
      changeChannel: function (index) {
       this.channelIcon = this.channels[index].icon;
       this.channelData = this.channels[index].name;
+      this.channelMsg = this.channels[index].Msg;
     },
     addMessage() {
-      this.currentMessages.push(this.newMessage);
+      this.channelMsg.push(this.newMessage);
       this.newMessage ='';
     },
     changeEditMode(index) {
       this.editNumber = index;
-      const editMessageArray = this.currentMessages;
+      const editMessageArray = this.channelMsg;
       this.newMessage = editMessageArray[index];
     },
     setMessage() {
@@ -80,6 +77,7 @@ export default {
     deleteMessage(index) {
       if(confirm('消しちゃうよ?')) {
         this.currentMessages.splice(index, 1);
+        // this.$set(this.currentMessages, index , this.channelMsg[index]);
       }
     },
   },

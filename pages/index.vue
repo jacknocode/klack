@@ -41,7 +41,7 @@ export default {
         { name: 'dev', icon: '💻' },
         { name: 'asobiba', icon: '🏀' }
       ],
-      channelIcon:'🏠',
+      channelIcon:'⤵️',
       channelData: '',
       editNumber: '',
       allMessages

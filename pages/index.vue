@@ -102,6 +102,9 @@ section {
   grid-column: 2;
   background-color: #ffffff;
 }
+.message__body_general {
+  background-color: #efece2;
+}
 .message__body_dev {
   background-color: #d3d3d3;
 }

@@ -21,7 +21,7 @@ module.exports = {
   ** Build configuration
   */
   css: [
-    '@css/app.css'
+    '@assets/css/app.css'
   ],
   build: {
     /*

@@ -93,7 +93,7 @@ section {
 }
 .title__icon {
   width: 100%;
-  margin: auto;
+  padding-top: 7px;
   grid-column: 1/2;
   grid-row: 1/2;
 }

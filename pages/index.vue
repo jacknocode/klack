@@ -2,15 +2,15 @@
   <section>
       <img :src="klackIcon" class="title__icon">
       <div class="message__body" :class="currentTabClassname">
-        <p v-for="(m, index) in currentMessages" :key="m">{{ m }}
+        <p v-for="(m, index) in currentChannelMessages" :key="m">{{ m }}
           <span v-on:click="changeEditMode(index)">📝</span>
           <span v-on:click="deleteMessage(index)">❌</span>
         </p>
       </div>
       <div class="message__sidebar">
-        <div class="message__sidebar__title">{{ channelIcon }}</div>
+        <div class="message__sidebar__title">{{ currentChannel.icon }}</div>
         <ul>
-          <li v-for="(t, index) in channelNav" @click="changeChannel(index)" :key="t.name">
+          <li v-for="(t, index) in channels" @click="changeChannel(index)" :key="t.name">
             {{ t.name }}
           </li>
         </ul>
@@ -26,60 +26,57 @@
   </section>
 </template>
 <script>
-const allMessages = {
-   'general': [],
-   'dev': [],
-   'asobiba': []
-};
+import lodash from'lodash'
+
 export default {
   data () {
     return {
       klackIcon: require("../assets/klack-logo.png"),
-      newMessage: '',
+
       channels: [
-        { name: 'general', icon: '📝' },
-        { name: 'dev', icon: '💻' },
-        { name: 'asobiba', icon: '🏀' }
+        { name: 'general', icon: '📝',Msg: []},//channnels.Msg[index] = allMessages.channnelData[index] やりたい→Msg: { number: n ,body:"" }
+        { name: 'dev', icon: '💻',Msg: []},
+        { name: 'asobiba', icon: '🏀',Msg: []}
       ],
-      channelIcon:'⤵️',
-      channelData: '',
-      editNumber: '',
-      allMessages
+
+      currentChannelIndex: 0,
+
+      newMessage: '',
+      editNumber: ''
     }
   },
   computed: {
     currentTabClassname() {
-      return `message__body_${this.channelData}`;
+      return `message__body_${this.currentChannel.name}`;
     },
-    channelNav() {
-      return this.channels
+    currentChannel() {
+      return this.channels[this.currentChannelIndex];
     },
-    currentMessages() {
-      return allMessages[this.channelData];
-    },
+    currentChannelMessages() {
+      return this.currentChannel.Msg;
+    }
   },
   methods: {
-     changeChannel: function (index) {
-      this.channelIcon = this.channels[index].icon;
-      this.channelData = this.channels[index].name;
-    },
+     changeChannel(index) {
+       this.currentChannelIndex = index;
+     },
     addMessage() {
-      this.currentMessages.push(this.newMessage);
+      this.currentChannelMessages.push(this.newMessage);
       this.newMessage ='';
     },
     changeEditMode(index) {
       this.editNumber = index;
-      const editMessageArray = this.currentMessages;
-      this.newMessage = editMessageArray[index];
+      this.newMessage = this.currentChannelMessages[index];
     },
     setMessage() {
-      this.$set(this.currentMessages, this.editNumber , this.newMessage);
+      this.currentChannelMessages[this.editNumber] = this.newMessage;
       this.newMessage ='';
       this.editNumber ='';
     },
     deleteMessage(index) {
       if(confirm('消しちゃうよ?')) {
-        this.currentMessages.splice(index, 1);
+        this.currentChannelMessages.splice(index, 1);
+        // this.$set(this.currentMessages, index , this.channelMsg[index]);
       }
     },
   },
